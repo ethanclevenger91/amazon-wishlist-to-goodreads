@@ -1,0 +1,24 @@
+{
+    "name": "ethanclevenger91/amazon-wishlist-to-goodreads-to-read",
+    "description": "Import books on your Amazon Wishlist to your Goodreads To-Read shelf",
+    "authors": [
+        {
+            "name": "Ethan Clevenger",
+            "email": "ethan.c.clevenger@gmail.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/ethanclevenger91/amazon-wish-lister"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/ethanclevenger91/goodreads-oauth"
+        }
+    ],
+    "require": {
+      "doitlikejustin/amazon-wish-lister":"dev-master",
+      "ethanclevenger91/goodreads-oauth":"dev-master"
+    }
+}

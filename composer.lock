@@ -1,0 +1,152 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "27dd3a6e5c6bd0390e33d49c741543ac",
+    "content-hash": "52f033afe53c25940eb821fb55d7cfd7",
+    "packages": [
+        {
+            "name": "doitlikejustin/amazon-wish-lister",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ethanclevenger91/amazon-wish-lister.git",
+                "reference": "38712b4ad7d3f304284f93498d47206558d7c3ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ethanclevenger91/amazon-wish-lister/zipball/38712b4ad7d3f304284f93498d47206558d7c3ff",
+                "reference": "38712b4ad7d3f304284f93498d47206558d7c3ff",
+                "shasum": ""
+            },
+            "type": "library",
+            "authors": [
+                {
+                    "name": "Justin Scarpetti",
+                    "homepage": "http://www.justinscarpetti.com/"
+                }
+            ],
+            "description": "Retrieve Amazon Wishlist and output to JSON, XML, or PHP Array Object http://www.justinscarpetti.com/portfolio/amazon-wish-lister/",
+            "support": {
+                "source": "https://github.com/ethanclevenger91/amazon-wish-lister/tree/master"
+            },
+            "time": "2016-01-02 02:24:07"
+        },
+        {
+            "name": "ethanclevenger91/goodreads-oauth",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ethanclevenger91/goodreads-oauth.git",
+                "reference": "6693bda1fa78aecf36cd1cff5c5fa01f87e0f23c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ethanclevenger91/goodreads-oauth/zipball/6693bda1fa78aecf36cd1cff5c5fa01f87e0f23c",
+                "reference": "6693bda1fa78aecf36cd1cff5c5fa01f87e0f23c",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "GoodreadsOauth": "src/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Ethan Clevenger",
+                    "email": "ethan.c.clevenger@gmail.com"
+                }
+            ],
+            "description": "OAuth for Goodreads",
+            "support": {
+                "source": "https://github.com/ethanclevenger91/goodreads-oauth/tree/master",
+                "issues": "https://github.com/ethanclevenger91/goodreads-oauth/issues"
+            },
+            "time": "2016-01-02 20:16:52"
+        },
+        {
+            "name": "lusitanian/oauth",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ethanclevenger91/PHPoAuthLib.git",
+                "reference": "04458730b353e477cd79c2964351ec43c3db9d50"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ethanclevenger91/PHPoAuthLib/zipball/04458730b353e477cd79c2964351ec43c3db9d50",
+                "reference": "04458730b353e477cd79c2964351ec43c3db9d50",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*",
+                "predis/predis": "0.8.*@dev",
+                "squizlabs/php_codesniffer": "2.*",
+                "symfony/http-foundation": "~2.1"
+            },
+            "suggest": {
+                "ext-openssl": "Allows for usage of secure connections with the stream-based HTTP client.",
+                "predis/predis": "Allows using the Redis storage backend.",
+                "symfony/http-foundation": "Allows using the Symfony Session storage backend."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "OAuth": "src",
+                    "OAuth\\Unit": "tests"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Desberg",
+                    "email": "david@daviddesberg.com"
+                },
+                {
+                    "name": "Pieter Hordijk",
+                    "email": "info@pieterhordijk.com"
+                },
+                {
+                    "name": "Elliot Chance",
+                    "email": "elliotchance@gmail.com"
+                }
+            ],
+            "description": "PHP 5.3+ oAuth 1/2 Library",
+            "keywords": [
+                "authentication",
+                "authorization",
+                "oauth",
+                "security"
+            ],
+            "support": {
+                "source": "https://github.com/ethanclevenger91/PHPoAuthLib/tree/master"
+            },
+            "time": "2016-01-02 21:33:34"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "doitlikejustin/amazon-wish-lister": 20,
+        "ethanclevenger91/goodreads-oauth": 20,
+        "lusitanian/oauth": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
