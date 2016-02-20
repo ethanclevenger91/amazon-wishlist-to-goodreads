@@ -35,7 +35,7 @@
     ini_set('xdebug.var_display_max_data', 2048);
     ini_set('max_execution_time', 300);
     error_reporting(0);
-    use OAuth\OAuth1\Service\FitBit;
+    use OAuth\OAuth1\Service\Goodreads;
     use OAuth\Common\Storage\Session;
     use OAuth\Common\Consumer\Credentials;
     require_once __DIR__ . '/vendor/autoload.php';
