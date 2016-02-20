@@ -14,11 +14,11 @@
         },
         {
           "type": "vcs",
-          "url": "https://github.com/ethanclevenger91/goodreads-oauth"
+          "url": "https://github.com/ethanclevenger91/PHPoAuthLib"
         }
     ],
     "require": {
-      "doitlikejustin/amazon-wish-lister":"dev-master",
-      "ethanclevenger91/goodreads-oauth":"dev-master"
+      "ethanclevenger91/amazon-wish-lister":"dev-master",
+      "lusitanian/oauth":"dev-goodreads"
     }
 }

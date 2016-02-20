@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "27dd3a6e5c6bd0390e33d49c741543ac",
-    "content-hash": "52f033afe53c25940eb821fb55d7cfd7",
+    "hash": "9d8cafad6587da21b15f8b46f7a57e2a",
+    "content-hash": "0d54d9103408417fa39519dd3e32cad7",
     "packages": [
         {
-            "name": "doitlikejustin/amazon-wish-lister",
+            "name": "ethanclevenger91/amazon-wish-lister",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ethanclevenger91/amazon-wish-lister.git",
-                "reference": "38712b4ad7d3f304284f93498d47206558d7c3ff"
+                "reference": "f6692c80f84a51e1434edfb4e8d12834cde4441a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ethanclevenger91/amazon-wish-lister/zipball/38712b4ad7d3f304284f93498d47206558d7c3ff",
-                "reference": "38712b4ad7d3f304284f93498d47206558d7c3ff",
+                "url": "https://api.github.com/repos/ethanclevenger91/amazon-wish-lister/zipball/f6692c80f84a51e1434edfb4e8d12834cde4441a",
+                "reference": "f6692c80f84a51e1434edfb4e8d12834cde4441a",
                 "shasum": ""
             },
             "type": "library",
@@ -28,11 +28,11 @@
                     "homepage": "http://www.justinscarpetti.com/"
                 }
             ],
-            "description": "Retrieve Amazon Wishlist and output to JSON, XML, or PHP Array Object http://www.justinscarpetti.com/portfolio/amazon-wish-lister/",
+            "description": "Retrieve Amazon Wishlist and output to JSON, XML, or PHP Array Object http://www.justinscarpetti.com/portfolio/amazon-wish-lister/. Forked Feb. 2016 to add Author & ISBN cap.",
             "support": {
                 "source": "https://github.com/ethanclevenger91/amazon-wish-lister/tree/master"
             },
-            "time": "2016-01-02 02:24:07"
+            "time": "2016-02-19 23:01:25"
         },
         {
             "name": "ethanclevenger91/goodreads-oauth",
@@ -40,12 +40,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ethanclevenger91/goodreads-oauth.git",
-                "reference": "6693bda1fa78aecf36cd1cff5c5fa01f87e0f23c"
+                "reference": "9c9700567edc8534a8235a37300b6b3b3d3b01ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ethanclevenger91/goodreads-oauth/zipball/6693bda1fa78aecf36cd1cff5c5fa01f87e0f23c",
-                "reference": "6693bda1fa78aecf36cd1cff5c5fa01f87e0f23c",
+                "url": "https://api.github.com/repos/ethanclevenger91/goodreads-oauth/zipball/9c9700567edc8534a8235a37300b6b3b3d3b01ba",
+                "reference": "9c9700567edc8534a8235a37300b6b3b3d3b01ba",
                 "shasum": ""
             },
             "type": "library",
@@ -65,20 +65,20 @@
                 "source": "https://github.com/ethanclevenger91/goodreads-oauth/tree/master",
                 "issues": "https://github.com/ethanclevenger91/goodreads-oauth/issues"
             },
-            "time": "2016-01-02 20:16:52"
+            "time": "2016-02-19 23:04:35"
         },
         {
             "name": "lusitanian/oauth",
-            "version": "dev-master",
+            "version": "dev-goodreads",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ethanclevenger91/PHPoAuthLib.git",
-                "reference": "04458730b353e477cd79c2964351ec43c3db9d50"
+                "reference": "5069fb3c5777d5264295bf14798a52ef452f9325"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ethanclevenger91/PHPoAuthLib/zipball/04458730b353e477cd79c2964351ec43c3db9d50",
-                "reference": "04458730b353e477cd79c2964351ec43c3db9d50",
+                "url": "https://api.github.com/repos/ethanclevenger91/PHPoAuthLib/zipball/5069fb3c5777d5264295bf14798a52ef452f9325",
+                "reference": "5069fb3c5777d5264295bf14798a52ef452f9325",
                 "shasum": ""
             },
             "require": {
@@ -132,16 +132,16 @@
                 "security"
             ],
             "support": {
-                "source": "https://github.com/ethanclevenger91/PHPoAuthLib/tree/master"
+                "source": "https://github.com/ethanclevenger91/PHPoAuthLib/tree/goodreads"
             },
-            "time": "2016-01-02 21:33:34"
+            "time": "2016-02-20 00:44:30"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "doitlikejustin/amazon-wish-lister": 20,
+        "ethanclevenger91/amazon-wish-lister": 20,
         "ethanclevenger91/goodreads-oauth": 20,
         "lusitanian/oauth": 20
     },

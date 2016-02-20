@@ -14,9 +14,7 @@
     <meta property="og:title" content="Amazon Wishlist to Goodreads Transferer" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<?php echo $_SERVER['HTTP_HOST']; ?>" />
-    <!-- <meta property="og:image" content="http://beerpilgrimage.com/blog/wp-content/uploads/2015/12/bpfacebook-300x300.jpg" /> -->
-    <!-- <meta property="og:image:width" content="300" /> -->
-    <!-- <meta property="og:image:height" content="300" /> -->
+
     <meta property="og:site_name" content="Amazon Wishlist to Goodreads Transferer" />
     <meta property="og:description" content="Port books on your Amazon wishlist to your Goodreads account" />
     <title>Amazon WishList to GoodReads To-Read Shelf</title>
@@ -36,83 +34,75 @@
     ini_set('xdebug.var_display_max_children', 512);
     ini_set('xdebug.var_display_max_data', 2048);
     ini_set('max_execution_time', 300);
-    include 'config.php';
-    $key = GOODREADS_KEY;
-    $secret = GOODREADS_SECRET;
-    include_once(realpath(__DIR__.'/vendor/ethanclevenger91/goodreads-oauth/src/GoodreadsOauth/GoodreadsOauth.php'));
-    include_once(realpath(__DIR__.'/includes/functions.php'));
     error_reporting(0);
-    session_start(); ?>
+    use OAuth\OAuth1\Service\FitBit;
+    use OAuth\Common\Storage\Session;
+    use OAuth\Common\Consumer\Credentials;
+    require_once __DIR__ . '/vendor/autoload.php';
+    require_once __DIR__.'/config.php';
+    require_once __DIR__.'/includes/functions.php';
+    $uriFactory = new \OAuth\Common\Http\Uri\UriFactory();
+    $currentUri = $uriFactory->createFromSuperGlobalArray($_SERVER);
+    $currentUri->setQuery('');
+    $serviceFactory = new \OAuth\ServiceFactory();
+    $storage = new Session();
+
+    // Setup the credentials for the requests
+    $credentials = new Credentials(
+      GOODREADS_KEY,
+      GOODREADS_SECRET,
+      $currentUri->getAbsoluteUri()
+    );
+    $goodreadsService = $serviceFactory->createService('Goodreads', $credentials, $storage);
+    if($storage->hasAccessToken('Goodreads')) {
+      $token = $storage->retrieveAccessToken('Goodreads');
+      if($token->isExpired()) {
+        $case = 1;
+      } else {
+        $case = 2;
+      }
+    } else if (!empty($_GET['oauth_token'])) {
+      $token = $storage->retrieveAccessToken('Goodreads');
+      // This was a callback request from goodreads, get the token
+      $goodreadsService->requestAccessToken(
+          $_GET['oauth_token'],
+          '', //goodreads is not currently passing back an oauth_verifier, see here: https://www.goodreads.com/topic/show/2043791-missing-oauth-verifier-parameter-on-user-auth-redirect
+          $token->getRequestTokenSecret()
+      );
+      $case = 2;
+    } else if (!empty($_GET['go']) && $_GET['go'] === 'go') {
+      // extra request needed for oauth1 to request a request token :-)
+      $token = $goodreadsService->requestRequestToken();
+      $url = $goodreadsService->getAuthorizationUri(array('oauth_token' => $token->getRequestToken(), 'oauth_callback' => GOODREADS_CALLBACK));
+      header('Location: ' . $url);
+    } else {
+      // $storage->clearAllTokens();
+      $case = 1;
+    } ?>
     <div class="container">
       <div class="row">
         <div class="col-xs-12 col-md-8 col-md-offset-2">
-          <?php
-          if(!isset($_SESSION['access_token']) && !isset($_REQUEST['oauth_token'])) { //no access token or oauth token
-            $case = 1;
-          } else if(!isset($_SESSION['access_token']) && isset($_REQUEST['oauth_token'])) { //oauth token, but no access token
-            $case = 2;
-          }
-          else if(isset($_SESSION['oauth_token']) && isset($_REQUEST['oauth_token']) && $_SESSION['oauth_token'] !== $_REQUEST['oauth_token']) { //oauth token not same as request token - forgery!!
+          <?php if(isset($_GET['shelf']) && !isset($_GET['wishlist']) && !isset($_GET['addBooks'])) { //shelf picked, get wishlist
             $case = 3;
-          } else {
-            $access_token = $_SESSION['access_token'];
-            $obj = new GoodreadsOauth($key, $secret, $access_token['oauth_token'], $access_token['oauth_token_secret']);
-            $content = $obj->doGet('http://www.goodreads.com/api/auth_user');
-            if($content == null || $content == 'Invalid OAuth Request') { //authorization failed, probably expired token
-              $case = 3;
-            } else if(isset($_GET['shelf'])) { //shelf picked, get wishlist
-              $case = 5;
-            } else if(isset($_GET['wishlist'])) { //wishlist picked, get books
-              $case = 6;
-            } else if(isset($_GET['addBooks'])) { //add the books!
-              $case = 7;
-            } else { //good to go, pick shelf
-              $case = 4;
-            }
+          } else if(isset($_GET['shelf']) && isset($_GET['wishlist']) && !isset($_GET['addBooks'])) { //wishlist picked, get books
+            $case = 4;
+          } else if(isset($_GET['shelf']) && isset($_GET['wishlist']) && isset($_GET['addBooks'])) { //add the books!
+            $case = 5;
           }
           switch($case) {
             case 1: //no request token or access token, get request token and sent user to authorize
-              $connection = new GoodreadsOauth($key, $secret);
-              $request_token = $connection->getRequestToken();
+              $authorize_url = $currentUri->getRelativeUri() . '?go=go';
 
-
-              $_SESSION['oauth_token']  = $request_token['oauth_token'];
-              $_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
-
-              $authorize_url = $connection->getLoginURL($request_token, 'http://'.$_SERVER['HTTP_HOST']); ?>
-
-              <?php pageHeader("We'd Start, But...", "You haven't authorized access to your Goodreads"); ?>
+              pageHeader("We'd Start, But...", "You haven't authorized access to your Goodreads"); ?>
               <?php progressBar(0); ?>
               <div style="text-align:center">
                 <a class="btn btn-primary" href="<?php echo $authorize_url; ?>">Click Here to Access Goodreads</a>
               </div>
               <?php break;
-            case 3: //token is expired
-              unset($_SESSION['access_token']); ?>
-              <div class="panel panel-danger">
-              <div class="panel-heading">Token Busted</div>
-              <div class="panel-body">
-                There was either a token mismatch, or your token is expired (probably the latter). <a href="http://<?php echo $_SERVER['HTTP_HOST']; ?>">Refresh to reauthorize GoodReads.</a>
-              </div>
-            </div>
-              <?php break;
-            case 2: //user has authorized, set access token
-              $obj = new GoodreadsOauth($key, $secret, $_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
-              $access_token = $obj->getAccessToken($_REQUEST['oauth_verifier']);
-              $_SESSION['access_token'] = $access_token;
-              unset ($_SESSION['oauth_token'], $_SESSION['oauth_token_secret'], $obj);
-            case 4: // all's well, let's pick a shelf
-              $obj = new GoodreadsOauth($key, $secret, $access_token['oauth_token'], $access_token['oauth_token_secret']);
-              $content = $obj->doGet('http://www.goodreads.com/api/auth_user');
-              $xml = simplexml_load_string($content);
-              $json = json_encode($xml);
-              $json = str_replace('@', '', $json);
-              $user = json_decode($json)->user;
-              $content = $obj->doGet('http://www.goodreads.com/shelf/list.xml?key='.$key.'&user_id='.$user->attributes->id.'&page=1');
-              $xml = simplexml_load_string($content);
-              $json = json_encode($xml);
-              $json = str_replace('@', '', $json);
-              $shelves = json_decode($json)->shelves->user_shelf;
+            case 2: // all's well, let's pick a shelf
+              $user_obj = xml_to_json($goodreadsService->request('api/auth_user'));
+              $user = $user_obj->GoodreadsResponse->user;
+              $shelves = xml_to_json($goodreadsService->request('shelf/list.xml?key='.GOODREADS_KEY.'&user_id='.$user->{'@id'}.'&page=1'))->GoodreadsResponse->shelves->user_shelf;
               pageHeader("Add to which shelf?", "A little flexibility");
               progressBar(25);
               echo '<form method="get">';
@@ -122,7 +112,7 @@
               echo '<input type="submit" class="btn btn-primary" value="Confirm Shelf">';
               echo '</form>';
               break;
-            case 5:
+            case 3:
               ?>
               <?php pageHeader("Amazon Wishlist We Should Look At?", "Put the public URL below"); ?>
               <?php progressBar(50); ?>
@@ -147,7 +137,7 @@
               </div>
             <?php
               break;
-            case 6:
+            case 4:
               if(empty($_GET['wishlist'])) {
                 pageHeader("You didn't put in a wishlist", "Use the back button in your browser to resolve this");
                 break;
@@ -156,7 +146,7 @@
               $regex = '/[\w]+\W+/i';
               $amazonID = preg_replace($regex, '', $wishlistUrl);
               try {
-                $ch = curl_init('http://'.$_SERVER['HTTP_HOST'].'/vendor/doitlikejustin/amazon-wish-lister/src/wishlist.php?isbn=true&author=true&id='.$amazonID);
+                $ch = curl_init('http://'.$_SERVER['HTTP_HOST'].'/vendor/ethanclevenger91/amazon-wish-lister/src/wishlist.php?isbn=true&author=true&id='.$amazonID);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 $result = curl_exec($ch);
@@ -183,20 +173,20 @@
                 <input type="hidden" name="wishlist" value="<?php echo $_GET['wishlist']; ?>">
 
                 <?php
-                $access_token = $_SESSION['access_token'];
-                $obj = new GoodreadsOauth($key, $secret, $access_token['oauth_token'], $access_token['oauth_token_secret']);
                 $bookIds = [];
                 // var_export($result);
                 foreach($result as $wishlistItem) {
                   if(!empty($wishlistItem->isbn) && $wishlistItem->isbn != ':') {
                     $wishlistItem->isbn = str_replace('-', '', $wishlistItem->isbn);
-                    $bestBookId = findGoodreadsMatch($wishlistItem, $obj->doGet('http://www.goodreads.com/search/index.xml?key='.$key.'&q='.$wishlistItem->isbn.'&search[field]=isbn'));
+                    $books = xml_to_json($goodreadsService->request('search/index.xml?key='.GOODREADS_KEY.'&q='.$wishlistItem->isbn.'&search[field]=isbn'));
+                    $bestBookId = findGoodreadsMatch($wishlistItem, $books);
                     if($bestBookId !== false) {
                       $bookIds[$bestBookId] = $wishlistItem;
                     }
                   } else if($wishlistItem->author) {
                     $wishlistItem->name = cleanAmazonName($wishlistItem->name);
-                    $bestBookId = findGoodreadsMatch($wishlistItem, $obj->doGet('http://www.goodreads.com/search/index.xml?key='.$key.'&q='.urlencode($wishlistItem->name.' '.$wishlistItem->author).'&search[field]=all'));
+                    $books = xml_to_json($goodreadsService->request('search/index.xml?key='.GOODREADS_KEY.'&q='.urlencode($wishlistItem->name.' '.$wishlistItem->author).'&search[field]=all'));
+                    $bestBookId = findGoodreadsMatch($wishlistItem, $books);
                     if($bestBookId !== false) {
                       $bookIds[$bestBookId] = $wishlistItem;
                     }
@@ -241,12 +231,9 @@
               </form>
             <?php
               break;
-            case 7:
-              $access_token = $_SESSION['access_token'];
-              $obj = new GoodreadsOauth($key, $secret, $access_token['oauth_token'], $access_token['oauth_token_secret']);
-              $content = $obj->doPost('http://www.goodreads.com/shelf/add_books_to_shelves.xml', ['key'=> $key, 'bookids' => implode(',', $_GET['addBooks']), 'shelves' => $_GET['shelf']]);
-              $result = json_decode(json_encode(simplexml_load_string($content)));
-              if($result->result == 'ok') {
+            case 5:
+              $result = xml_to_json($goodreadsService->request('shelf/add_books_to_shelves.xml', 'POST', ['key' => GOODREADS_KEY, 'bookids' => implode(',', $_GET['addBooks']), 'shelves' => $_GET['shelf']]));
+              if($result->GoodreadsResponse->result == 'ok') {
                 pageHeader("Success!", "You can <a href=\"http://".$_SERVER['HTTP_HOST']."\">do it again</a> if you want.");
                 progressBar(100);
               } else {
