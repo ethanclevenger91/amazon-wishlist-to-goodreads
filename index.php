@@ -11,13 +11,13 @@
     <meta name="keywords" itemprop="keywords" content="goodreads amazon wishlist" />
 
     <link rel="canonical" href="<?php echo $_SERVER['HTTP_HOST']; ?>" />
-    <meta property="og:title" content="Amazon Wishlist to Goodreads Transferer" />
+    <meta property="og:title" content="Fill My Shelves" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<?php echo $_SERVER['HTTP_HOST']; ?>" />
 
-    <meta property="og:site_name" content="Amazon Wishlist to Goodreads Transferer" />
+    <meta property="og:site_name" content="Fill My Shelves" />
     <meta property="og:description" content="Port books on your Amazon wishlist to your Goodreads account" />
-    <title>Amazon WishList to GoodReads To-Read Shelf</title>
+    <title>Fill My Shelves</title>
 
     <!-- Bootstrap -->
     <link href="css/paper.min.css" rel="stylesheet">
@@ -34,9 +34,10 @@
     ini_set('xdebug.var_display_max_children', 512);
     ini_set('xdebug.var_display_max_data', 2048);
     ini_set('max_execution_time', 300);
-    error_reporting(0);
+    // error_reporting(0);
     use OAuth\OAuth1\Service\Goodreads;
     use OAuth\Common\Storage\Session;
+    use OAuth\Common\Http\Exception\TokenResponseException;
     use OAuth\Common\Consumer\Credentials;
     require_once __DIR__ . '/vendor/autoload.php';
     require_once __DIR__.'/config.php';
@@ -54,14 +55,16 @@
       $currentUri->getAbsoluteUri()
     );
     $goodreadsService = $serviceFactory->createService('Goodreads', $credentials, $storage);
+
     if($storage->hasAccessToken('Goodreads')) {
-      $token = $storage->retrieveAccessToken('Goodreads');
-      if($token->isExpired()) {
-        $case = 1;
-      } else {
+      try {
+        $checkValid = $goodreadsService->request('api/auth_user');
         $case = 2;
+      } catch(TokenResponseException $e) {
+        //do nothing
       }
-    } else if (!empty($_GET['oauth_token'])) {
+    }
+    if(!isset($case) && !empty($_GET['oauth_token'])) {
       $token = $storage->retrieveAccessToken('Goodreads');
       // This was a callback request from goodreads, get the token
       $goodreadsService->requestAccessToken(
@@ -75,7 +78,7 @@
       $token = $goodreadsService->requestRequestToken();
       $url = $goodreadsService->getAuthorizationUri(array('oauth_token' => $token->getRequestToken(), 'oauth_callback' => GOODREADS_CALLBACK));
       header('Location: ' . $url);
-    } else {
+    } else if(!isset($case)) {
       // $storage->clearAllTokens();
       $case = 1;
     } ?>
@@ -100,6 +103,7 @@
               </div>
               <?php break;
             case 2: // all's well, let's pick a shelf
+
               $user_obj = xml_to_json($goodreadsService->request('api/auth_user'));
               $user = $user_obj->GoodreadsResponse->user;
               $shelves = xml_to_json($goodreadsService->request('shelf/list.xml?key='.GOODREADS_KEY.'&user_id='.$user->{'@id'}.'&page=1'))->GoodreadsResponse->shelves->user_shelf;
@@ -256,6 +260,8 @@
         display:flex;
         flex-direction:column;
         min-height:100vh;
+        font-family:"Trebuchet MS", sans-serif;
+        font-size:17px;
       }
       body > .container {
         flex:1;
@@ -273,6 +279,21 @@
        }
       table h3 {
         margin:0;
+      }
+      h1 {
+        font-family:Georgia;
+        line-height:1;
+      }
+      small {
+        display:block;
+        font-family:"Trebuchet MS", sans-serif;
+        font-weight:300 !important;
+        margin-top:.3em;
+        line-height:1.2 !important;
+      }
+      input[type="radio"] {
+        margin-top:9px;
+        margin-right:9px;
       }
     </style>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

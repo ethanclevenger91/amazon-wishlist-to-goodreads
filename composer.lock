@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9d8cafad6587da21b15f8b46f7a57e2a",
-    "content-hash": "0d54d9103408417fa39519dd3e32cad7",
+    "hash": "212e61ae9c1ad3020eaa737f44879b32",
+    "content-hash": "3b77f84bffb8085b0022edf3939c0675",
     "packages": [
         {
             "name": "ethanclevenger91/amazon-wish-lister",
@@ -35,50 +35,17 @@
             "time": "2016-02-19 23:01:25"
         },
         {
-            "name": "ethanclevenger91/goodreads-oauth",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ethanclevenger91/goodreads-oauth.git",
-                "reference": "9c9700567edc8534a8235a37300b6b3b3d3b01ba"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ethanclevenger91/goodreads-oauth/zipball/9c9700567edc8534a8235a37300b6b3b3d3b01ba",
-                "reference": "9c9700567edc8534a8235a37300b6b3b3d3b01ba",
-                "shasum": ""
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "GoodreadsOauth": "src/"
-                }
-            },
-            "authors": [
-                {
-                    "name": "Ethan Clevenger",
-                    "email": "ethan.c.clevenger@gmail.com"
-                }
-            ],
-            "description": "OAuth for Goodreads",
-            "support": {
-                "source": "https://github.com/ethanclevenger91/goodreads-oauth/tree/master",
-                "issues": "https://github.com/ethanclevenger91/goodreads-oauth/issues"
-            },
-            "time": "2016-02-19 23:04:35"
-        },
-        {
             "name": "lusitanian/oauth",
             "version": "dev-goodreads",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ethanclevenger91/PHPoAuthLib.git",
-                "reference": "5069fb3c5777d5264295bf14798a52ef452f9325"
+                "reference": "8761e6d2df080c0c40a599468394990feb90b034"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ethanclevenger91/PHPoAuthLib/zipball/5069fb3c5777d5264295bf14798a52ef452f9325",
-                "reference": "5069fb3c5777d5264295bf14798a52ef452f9325",
+                "url": "https://api.github.com/repos/ethanclevenger91/PHPoAuthLib/zipball/8761e6d2df080c0c40a599468394990feb90b034",
+                "reference": "8761e6d2df080c0c40a599468394990feb90b034",
                 "shasum": ""
             },
             "require": {
@@ -134,7 +101,7 @@
             "support": {
                 "source": "https://github.com/ethanclevenger91/PHPoAuthLib/tree/goodreads"
             },
-            "time": "2016-02-20 00:44:30"
+            "time": "2016-02-20 05:47:19"
         }
     ],
     "packages-dev": [],
@@ -142,7 +109,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "ethanclevenger91/amazon-wish-lister": 20,
-        "ethanclevenger91/goodreads-oauth": 20,
         "lusitanian/oauth": 20
     },
     "prefer-stable": false,
